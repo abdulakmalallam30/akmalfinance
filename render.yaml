@@ -1,0 +1,30 @@
+services:
+  # Backend API
+  - type: web
+    name: akmalfinance-backend
+    env: node
+    region: singapore
+    plan: free
+    buildCommand: cd backend && npm install
+    startCommand: cd backend && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+    healthCheckPath: /api/health
+
+  # Frontend React App
+  - type: web
+    name: akmalfinance-frontend
+    env: static
+    region: singapore
+    plan: free
+    buildCommand: cd frontend && npm install && REACT_APP_API_URL=$BACKEND_URL npm run build
+    staticPublishPath: frontend/build
+    envVars:
+      - key: BACKEND_URL
+        fromService:
+          type: web
+          name: akmalfinance-backend
+          envVarKey: RENDER_EXTERNAL_URL

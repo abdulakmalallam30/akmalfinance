@@ -20,6 +20,8 @@ import { ToastContainer, useToast } from './Toast';
 import { Loader, BarChart3, Receipt, Wallet, TrendingUp, Calculator, LogOut, Upload, Trash2, Edit, Users, Calendar, CreditCard, ArrowLeftRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
 function AuthenticatedApp() {
   const { currentUser, userData, saveUserData } = useAuth();
   const { toasts, addToast, removeToast } = useToast();
@@ -216,7 +218,7 @@ function AuthenticatedApp() {
       } else {
         // Fallback: try to fetch from backend
         console.log('⚠️ No data in callback, trying backend fetch...');
-        const response = await fetch('http://localhost:5000/api/expenses').catch(() => null);
+        const response = await fetch(`${API_URL}/api/expenses`).catch(() => null);
         
         if (response && response.ok) {
           const result = await response.json();
